@@ -3,12 +3,19 @@ import { InterviewPlan, InterviewAnalysis, EducationRole } from '@/types';
 
 export const DEFAULT_MODEL = process.env.OPENAI_MODEL || 'gpt-4o';
 
-// Temperature 0.7 keeps conversation natural while staying focused
-const model = new ChatOpenAI({
-  model: DEFAULT_MODEL,
-  temperature: 0.7,
-  openAIApiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy-loaded model to avoid build-time initialization errors
+let _model: ChatOpenAI | null = null;
+
+function getModel(): ChatOpenAI {
+  if (!_model) {
+    _model = new ChatOpenAI({
+      model: DEFAULT_MODEL,
+      temperature: 0.7,
+      openAIApiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+  return _model;
+}
 
 // BADM554 Enterprise Database Management Survey Plan
 const BADM554_SURVEY_PLAN: InterviewPlan = {
@@ -101,7 +108,7 @@ Your task:
 
 Respond conversationally. Remember: ONE question only.`;
 
-  const response = await model.invoke(prompt);
+  const response = await getModel().invoke(prompt);
   return response.content as string;
 }
 
@@ -130,7 +137,7 @@ Your task: Write a brief, warm closing message that:
 
 Keep it to 2-3 sentences total. Be genuine and welcoming to the course.`;
 
-  const response = await model.invoke(prompt);
+  const response = await getModel().invoke(prompt);
   return response.content as string;
 }
 
@@ -194,7 +201,7 @@ Areas Needing Support: Specific topics where they may need extra help
 Topics of Interest: What they're most excited to learn
 Recommendations: How the instructor can best support this student`;
 
-  const response = await model.invoke(prompt);
+  const response = await getModel().invoke(prompt);
   const content = response.content as string;
 
   try {
