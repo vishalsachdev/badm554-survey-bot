@@ -1,0 +1,35 @@
+{
+  "name": "claude-interviewer-clone",
+  "version": "1.0.0",
+  "description": "Open-source interview bot clone using OpenAI and Vercel",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@langchain/core": "^0.3.79",
+    "@langchain/openai": "^0.3.17",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.86.2",
+    "langchain": "^0.3.36",
+    "next": "^14.2.33",
+    "openai": "^4.104.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.25.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.9",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.33",
+    "typescript": "^5.6.3"
+  },
+  "overrides": {
+    "rimraf": "^5.0.0",
+    "glob": "^10.3.0"
+  }
+}
