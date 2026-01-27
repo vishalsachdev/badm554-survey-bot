@@ -2,6 +2,8 @@
 
 Pre-course survey bot for BADM554 Enterprise Database Management (Spring 2026).
 
+**GitHub**: https://github.com/vishalsachdev/badm554-survey-bot
+
 ## Quick Start
 
 ```bash
@@ -99,3 +101,4 @@ Deployed. Ready for pilot testing.
 | 2025-01-26 | Initial setup, Supabase linked, schema pushed |
 | 2026-01-26 | Deployed to Vercel, fixed API error handling, improved prompts |
 | 2026-01-27 | Exported survey data (68 sessions, 677 messages) to `data/` |
+| 2026-01-27 | Added multi-vendor LLM support (OpenAI + Gemini), pushed to GitHub |
