@@ -50,9 +50,27 @@ FROM sessions WHERE status = 'completed';
 
 ---
 
+## Vercel Deployment
+
+**Production URL**: https://badm554-survey-bot.vercel.app
+
+### Environment Variables (Vercel Dashboard)
+- `OPENAI_API_KEY` - Required
+- `NEXT_PUBLIC_SUPABASE_URL` - Public, okay to expose
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Public anon key, okay to expose
+- `OPENAI_MODEL` - Optional, defaults to `gpt-4o`
+
+### Deployment Notes
+- Always test locally before deploying: `npm run dev` then `curl` the API
+- Use `vercel --prod --yes` to deploy
+- Use `vercel --prod --yes --force` to skip build cache if changes aren't reflected
+- Env vars must be set BEFORE deployment to take effect
+
+---
+
 ## Current Focus
 
-Deployment to Vercel for Spring 2026 launch.
+Deployed. Ready for pilot testing.
 
 ## Roadmap
 
@@ -60,12 +78,23 @@ Deployment to Vercel for Spring 2026 launch.
 - [x] Illinois branding (blue/orange)
 - [x] BADM554 survey questions
 - [x] Supabase integration
-- [ ] Deploy to Vercel
+- [x] Deploy to Vercel
+- [x] Improve conversational prompts (probe vague answers)
 - [ ] Test with pilot students
 - [ ] Add class-wide analytics dashboard
+
+## Lessons Learned
+
+| Issue | Solution |
+|-------|----------|
+| Bot resets to start screen on API error | Check `response.ok` before using `data.session` in frontend |
+| Model-specific params (e.g., temperature) | Some models don't support custom temperature; remove or make conditional |
+| Vercel env vars not applied | Must redeploy after adding env vars; use `--force` if cached |
+| Generic "Failed to process" error | Check local server logs for actual error message |
 
 ## Session Log
 
 | Date | Summary |
 |------|---------|
 | 2025-01-26 | Initial setup, Supabase linked, schema pushed |
+| 2026-01-26 | Deployed to Vercel, fixed API error handling, improved prompts |

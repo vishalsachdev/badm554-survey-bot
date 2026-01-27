@@ -126,6 +126,11 @@ export default function Home() {
       });
 
       const data = await response.json();
+
+      if (!response.ok || !data.session) {
+        throw new Error(data.error || 'Failed to send message');
+      }
+
       setSession(data.session);
 
       // Show wrap-up prompt after bot's closing message

@@ -10,7 +10,6 @@ function getModel(): ChatOpenAI {
   if (!_model) {
     _model = new ChatOpenAI({
       model: DEFAULT_MODEL,
-      temperature: 0.7,
       openAIApiKey: process.env.OPENAI_API_KEY,
     });
   }
@@ -77,36 +76,30 @@ export async function generateInterviewResponse(
 
   const questionsRemaining = plan.questions.slice(1).join('\n- ');
 
-  const prompt = `You are conducting a pre-course survey for BADM554 Enterprise Database Management (Spring 2026). You are speaking with an incoming student to understand their background and help tailor the course.
+  const prompt = `You are having a natural conversation with an incoming student for BADM554 Enterprise Database Management (Spring 2026). Your goal is to understand their background - not to run through a checklist.
 
-Survey Objectives:
-${plan.objectives.map(obj => `- ${obj}`).join('\n')}
-
-Focus Areas to explore:
+Topics to explore (in whatever order feels natural):
 ${plan.focusAreas.map(area => `- ${area}`).join('\n')}
 
-Topics to cover (adapt based on conversation flow):
-- ${questionsRemaining}
-
-Previous conversation:
+Conversation so far:
 ${historyContext}
 
-Their latest response: ${currentMessage}
+Student just said: "${currentMessage}"
 
-IMPORTANT GUIDELINES:
-- Ask only ONE question per response. Never ask multiple questions.
-- Keep your response brief - 2-3 sentences max.
-- Briefly acknowledge what they shared, then ask your single follow-up question.
-- Don't summarize or repeat back everything they said.
-- Be warm and encouraging - this is about understanding their starting point, not testing them.
-- If they mention limited experience, reassure them that's perfectly fine and the course will cover it.
-- Move through topics efficiently - we want to cover background, skills, and goals.
+CRITICAL - Be a real conversationalist, not a form:
+- If their answer is vague or short (like "a little" or "some" or "not much"), DIG DEEPER. Ask what specifically? When? What did they do?
+- If they mention something interesting, follow up on THAT - don't just move to the next topic.
+- NEVER start with "It's great to hear" or "That's great" or similar. Vary your responses.
+- Sometimes just ask your question directly without any preamble.
+- React authentically - if something is surprising or interesting, say so briefly.
+- You can be curious, even playful. This isn't a job interview.
 
-Your task:
-1. Give a brief, warm acknowledgment (1 sentence)
-2. Ask ONE focused follow-up question that probes deeper OR moves to a new topic
+Examples of good follow-ups to short answers:
+- "SQL" → "What kinds of queries have you written? Simple SELECTs, or more complex stuff with joins and subqueries?"
+- "A little" → "Tell me more - what did that look like?"
+- "Not really" → "No worries at all. What about [related thing]?"
 
-Respond conversationally. Remember: ONE question only.`;
+Ask ONE question. Keep your response to 1-2 sentences total. Be human.`;
 
   const response = await getModel().invoke(prompt);
   return response.content as string;
