@@ -98,3 +98,4 @@ Deployed. Ready for pilot testing.
 |------|---------|
 | 2025-01-26 | Initial setup, Supabase linked, schema pushed |
 | 2026-01-26 | Deployed to Vercel, fixed API error handling, improved prompts |
+| 2026-01-27 | Exported survey data (68 sessions, 677 messages) to `data/` |
