@@ -1,17 +1,35 @@
 import { ChatOpenAI } from '@langchain/openai';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { InterviewPlan, InterviewAnalysis, EducationRole } from '@/types';
 
-export const DEFAULT_MODEL = process.env.OPENAI_MODEL || 'gpt-4o';
+// Detect which provider to use based on available API keys
+const PROVIDER = process.env.GOOGLE_API_KEY ? 'google' : 'openai';
+
+// Default models per provider
+const DEFAULT_MODELS: Record<string, string> = {
+  openai: 'gpt-4o',
+  google: 'gemini-2.0-flash',
+};
+
+export const DEFAULT_MODEL = process.env.LLM_MODEL || DEFAULT_MODELS[PROVIDER];
 
 // Lazy-loaded model to avoid build-time initialization errors
-let _model: ChatOpenAI | null = null;
+let _model: BaseChatModel | null = null;
 
-function getModel(): ChatOpenAI {
+function getModel(): BaseChatModel {
   if (!_model) {
-    _model = new ChatOpenAI({
-      model: DEFAULT_MODEL,
-      openAIApiKey: process.env.OPENAI_API_KEY,
-    });
+    if (PROVIDER === 'google') {
+      _model = new ChatGoogleGenerativeAI({
+        model: DEFAULT_MODEL,
+        apiKey: process.env.GOOGLE_API_KEY,
+      });
+    } else {
+      _model = new ChatOpenAI({
+        model: DEFAULT_MODEL,
+        openAIApiKey: process.env.OPENAI_API_KEY,
+      });
+    }
   }
   return _model;
 }
@@ -210,6 +228,11 @@ Recommendations: How the instructor can best support this student`;
 }
 
 export function calculateCost(tokens: number, modelName: string = DEFAULT_MODEL): number {
+  // Gemini models are free within quota limits
+  if (modelName.startsWith('gemini')) {
+    return 0;
+  }
+
   // OpenAI pricing (as of January 2026) in USD per 1K tokens
   const pricing: Record<string, { input: number; output: number }> = {
     'gpt-4o': { input: 0.005, output: 0.015 },

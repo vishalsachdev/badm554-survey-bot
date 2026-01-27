@@ -39,7 +39,7 @@ The bot explores:
 ## Tech Stack
 
 - **Frontend**: Next.js 14 with React
-- **AI**: OpenAI GPT-4o via LangChain
+- **AI**: OpenAI or Google Gemini via LangChain (multi-vendor support)
 - **Database**: Supabase (PostgreSQL)
 - **Styling**: CSS-in-JS with Illinois brand colors
 
@@ -48,19 +48,47 @@ The bot explores:
 ### Prerequisites
 
 - Node.js 18+
-- Supabase account
-- OpenAI API key
+- Supabase account (free tier works)
+- AI API key (choose one):
+  - **Google Gemini** (recommended for free usage)
+  - **OpenAI** (paid)
+
+### Getting an API Key
+
+#### Option 1: Google Gemini (Free)
+
+1. Go to [Google AI Studio](https://aistudio.google.com/)
+2. Sign in with your Google account
+3. Click "Get API Key" → "Create API key"
+4. Copy the key
+
+Gemini is **free** within generous quota limits (perfect for classroom use).
+
+#### Option 2: OpenAI (Paid)
+
+1. Go to [OpenAI Platform](https://platform.openai.com/)
+2. Create an account and add billing
+3. Go to API Keys → Create new secret key
+4. Copy the key
 
 ### Environment Variables
 
 Copy `.env.example` to `.env` and fill in:
 
 ```bash
-OPENAI_API_KEY=your_openai_api_key
-OPENAI_MODEL=gpt-4o  # optional, defaults to gpt-4o
+# Choose ONE of these (Gemini takes priority if both are set):
+GOOGLE_API_KEY=your_google_api_key    # Free option
+OPENAI_API_KEY=your_openai_api_key    # Paid option
+
+# Optional: override the default model
+LLM_MODEL=gemini-2.0-flash  # or gpt-4o, gemini-1.5-pro, etc.
+
+# Supabase (required)
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
+
+**Note**: If `GOOGLE_API_KEY` is set, the app uses Gemini. Otherwise, it uses OpenAI.
 
 ### Database Setup
 
@@ -81,10 +109,19 @@ Visit `http://localhost:3000` to use the survey.
 Deploy to Vercel:
 
 ```bash
-vercel
+npm install -g vercel
+vercel --prod
 ```
 
-Set the environment variables in your Vercel project settings.
+Set these environment variables in your Vercel project settings:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GOOGLE_API_KEY` | One of these | Google Gemini API key (free) |
+| `OPENAI_API_KEY` | One of these | OpenAI API key (paid) |
+| `LLM_MODEL` | No | Override default model |
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Supabase anon/public key |
 
 ## Usage
 
