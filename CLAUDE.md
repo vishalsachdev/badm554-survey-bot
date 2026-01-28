@@ -102,3 +102,4 @@ Deployed. Ready for pilot testing.
 | 2026-01-26 | Deployed to Vercel, fixed API error handling, improved prompts |
 | 2026-01-27 | Exported survey data (68 sessions, 677 messages) to `data/` |
 | 2026-01-27 | Added multi-vendor LLM support (OpenAI + Gemini), pushed to GitHub |
+| 2026-01-27 | Connected GitHub to Vercel for auto-deploy |
